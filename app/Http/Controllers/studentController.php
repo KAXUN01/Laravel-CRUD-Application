@@ -17,18 +17,19 @@ class StudentController extends Controller
         try {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:students,email',
+                'phone' => 'nullable|string|max:20',
+                'date_of_birth' => 'nullable|date',
+                'gender' => 'required|in:male,female,other',
+                'address' => 'nullable|string|max:500',
                 'info' => 'nullable|string|max:1000',
             ]);
 
             $student = Student::create($validated);
             
-            if($student) {
-                return redirect()->route('welcome')->with('success', 'Student added successfully!');
-            } else {
-                return back()->with('error', 'Failed to add student.');
-            }
+            return redirect()->route('welcome')->with('success', 'Student registered successfully!');
         } catch (\Exception $e) {
-            return back()->with('error', 'Error: ' . $e->getMessage());
+            return back()->with('error', 'Error: ' . $e->getMessage())->withInput();
         }
     }
 
@@ -58,6 +59,11 @@ class StudentController extends Controller
         try {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:students,email,'.$student->id,
+                'phone' => 'nullable|string|max:20',
+                'date_of_birth' => 'nullable|date',
+                'gender' => 'required|in:male,female,other',
+                'address' => 'nullable|string|max:500',
                 'info' => 'nullable|string|max:1000',
             ]);
 

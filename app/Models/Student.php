@@ -12,5 +12,17 @@ class Student extends Model
     protected $table = 'students';
 
     // Allow mass assignment for these fields
-    protected $fillable = ['name', 'info'];
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'date_of_birth',
+        'gender',
+        'address',
+        'info'
+    ];
+
+    protected $casts = [
+        'date_of_birth' => 'date',
+    ];
 }
